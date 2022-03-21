@@ -15,10 +15,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_pushButton_pressed()
+{
+    ui->pushButton->setStyleSheet("background-color: rgb(0,114,114)");
+}
+void MainWindow::on_pushButton_released()
+{
+    ui->pushButton->setStyleSheet("background-color: darkCyan");
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     std::string charSet(""),
-                output("");
+                password("");
 
     if (ui->checkBox_5->isChecked())
     {
@@ -48,7 +57,7 @@ void MainWindow::on_pushButton_clicked()
     {
         for (int i=0; i<ui->spinBox->value(); ++i)
         {
-            output+=charSet.at(rand()%(int)charSet.length());
+            password+=charSet.at(rand()%(int)charSet.length());
         }
         ui->plainTextEdit->appendPlainText(output.c_str());
     }
@@ -56,12 +65,4 @@ void MainWindow::on_pushButton_clicked()
 
 
 
-void MainWindow::on_pushButton_pressed()
-{
-    ui->pushButton->setStyleSheet("background-color: rgb(0,114,114)");
-}
-void MainWindow::on_pushButton_released()
-{
-    ui->pushButton->setStyleSheet("background-color: darkCyan");
-}
 
