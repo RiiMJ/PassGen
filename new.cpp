@@ -5,16 +5,19 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-std::string charSet(""),
-            output("");
+//initialise variables
+std:: string password("");
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
+    //set color of push buttons
     ui->pushButton->setStyleSheet("background-color: darkCyan");
-
+    ui->pushButton_2->setStyleSheet("background-color: darkCyan");
+    ui->pushButton_3->setStyleSheet("background-color: darkCyan");
 
 }
 
@@ -23,9 +26,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//change color when button pressed
+void MainWindow::on_pushButton_pressed()
+{
+    ui->pushButton->setStyleSheet("background-color: rgb(0,114,114)");
+}
+void MainWindow::on_pushButton_released()
+{
+    ui->pushButton->setStyleSheet("background-color: darkCyan");
+}
+
+//generate password when button clicked
 void MainWindow::on_pushButton_clicked()
 {
-
+    std:: string charSet("");
+    password = "";
 
     if (ui->checkBox_5->isChecked())
     {
@@ -55,24 +70,12 @@ void MainWindow::on_pushButton_clicked()
     {
         for (int i=0; i<ui->spinBox->value(); ++i)
         {
-            output+=charSet.at(rand()%(int)charSet.length());
+            password+=charSet.at(rand()%(int)charSet.length());
         }
-
-
-        ui->plainTextEdit->appendPlainText(output.c_str());
-        qInfo()<<output.c_str();
     }
-}
+    ui->plainTextEdit->appendPlainText(password.c_str());
 
-void MainWindow::on_pushButton_pressed()
-{
-    ui->pushButton->setStyleSheet("background-color: rgb(0,114,114)");
 }
-void MainWindow::on_pushButton_released()
-{
-    ui->pushButton->setStyleSheet("background-color: darkCyan");
-}
-
 
 // write files
 void writeFile()
@@ -80,9 +83,9 @@ void writeFile()
     QFile file("record.txt");
     if (file.open(QIODevice::Append))
     {
-        qInfo("opened");
+        //qInfo("opened");
         QTextStream stream (&file);
-        stream<<output.c_str();
+        stream<<password.c_str();
         file.flush();
     }
     else
@@ -99,7 +102,6 @@ void readFile()
     QFile file("record.txt");
     if (file.open(QIODevice::ReadOnly))
     {
-        qInfo("opened");
         QTextStream stream (&file);
         while(!stream.atEnd()){
             QString line = stream.readLine();
@@ -111,6 +113,16 @@ void readFile()
         qInfo("Not opened");
     }
     file.close();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    qInfo()<<password.c_str();
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    ui->plainTextEdit->clear();
 }
 
 int main(int argc, char *argv[])
